@@ -8,6 +8,26 @@ worth anything anyway :)
 
 Modified by Jeff Bruins
 
+Usage: 
+./reconscan.py <ipaddress>
+./ftprecon.py <ipaddress> <port>
+(mreconscan.py is a temp script to reincorporate batch scanning but isn't currently functional)
+
+reconscan.py scans to target and then executes the additional scanning scripts based on the findings (smb currently disabled)
+
+All other scripts can be used independantly of reconscan.py 
+
+At the present time, only ftprecon has been extensively modified and is "guaranteed" to be fully functional.  The others should work but may need modification to direct output or select brute forcing parameters.
+
+
+Change-log:
+11-1-2015
+
+Incorporated config file config.py for global variables
+
+ftprecon updated to include Hydra brute forcing functionality
+
+
 Change-log:
 10-30-2015
 
