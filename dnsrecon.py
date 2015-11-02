@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import subprocess
 import sys
+from config import *
 
 if len(sys.argv) != 2:
     print "Usage: dnsrecon.py <ip address>"
@@ -16,7 +17,7 @@ if "failed" in ztresults:
     print "INFO: Zone Transfer failed for " + host
 else:
     print "[*] Zone Transfer successful for " + host + "(" + ip_address + ")!!! [see output file]"
-    outfile = ip_address + "/" + ip_address+ "_zonetransfer.txt"
+    outfile = WORKSPACE + "/" + ip_address + "/" + ip_address+ "_zonetransfer.txt"
     dnsf = open(outfile, "w")
     dnsf.write(ztresults)
     dnsf.close

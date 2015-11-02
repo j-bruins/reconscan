@@ -21,6 +21,12 @@ At the present time, only ftprecon has been extensively modified and is "guarant
 
 
 Change-log:
+11-1-2015 part II
+
+Altered reconscan usage message
+
+Incorporated global workspace variable to all scripts
+
 11-1-2015
 
 Incorporated config file config.py for global variables

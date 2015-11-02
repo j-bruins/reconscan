@@ -23,11 +23,10 @@
 import subprocess
 import multiprocessing
 from multiprocessing import Process, Queue
+from config import *
 import os
 import time 
 import sys
-
-workspace = "default"
 
 def multProc(targetin, scanip, port):
     jobs = []
@@ -46,7 +45,7 @@ def dnsEnum(ip_address, port):
 def httpEnum(ip_address, port):
     print "INFO: Detected http on " + ip_address + ":" + port
     print "INFO: Performing nmap web script scan for " + ip_address + ":" + port    
-    HTTPSCAN = "nmap -sV -Pn -vv -p %s --script=http-vhosts,http-userdir-enum,http-apache-negotiation,http-backup-finder,http-config-backup,http-default-accounts,http-email-harvest,http-methods,http-method-tamper,http-passwd,http-robots.txt -oN %s/%s_http.nmap %s" % (port, ip_address, ip_address, ip_address)
+    HTTPSCAN = "nmap -sV -Pn -vv -p %s --script=http-vhosts,http-userdir-enum,http-apache-negotiation,http-backup-finder,http-config-backup,http-default-accounts,http-email-harvest,http-methods,http-method-tamper,http-passwd,http-robots.txt -oN %s/%s/%s_http.nmap %s" % (port, WORKSPACE, ip_address, ip_address, ip_address)
     results = subprocess.check_output(HTTPSCAN, shell=True)
     #DIRBUST = "./dirbust.py http://%s:%s %s %s" % (ip_address, port, ip_address, workspace) # execute the python script
     #subprocess.call(DIRBUST, shell=True)
@@ -59,7 +58,7 @@ def httpsEnum(ip_address, port):
     #pr = str(sys.argv[2])
     print "INFO: Detected https on " + ip_address + ":" + port
     print "INFO: Performing nmap web script scan for " + ip_address + ":" + port    
-    HTTPSCANS = "nmap -sV -Pn -vv -p %s --script=http-vhosts,http-userdir-enum,http-apache-negotiation,http-backup-finder,http-config-backup,http-default-accounts,http-email-harvest,http-methods,http-method-tamper,http-passwd,http-robots.txt -oX %s/%s_https.nmap %s" % (port, ip_address, ip_address, ip_address)
+    HTTPSCANS = "nmap -sV -Pn -vv -p %s --script=http-vhosts,http-userdir-enum,http-apache-negotiation,http-backup-finder,http-config-backup,http-default-accounts,http-email-harvest,http-methods,http-method-tamper,http-passwd,http-robots.txt -oX %s/%s/%s_https.nmap %s" % (port, WORKSPACE, ip_address, ip_address, ip_address)
     results = subprocess.check_output(HTTPSCANS, shell=True)
     #DIRBUST = "./dirbust.py https://%s:%s %s" % (ip_address, port, ip_address) # execute the python script
     #subprocess.call(DIRBUST, shell=True)
@@ -70,7 +69,7 @@ def httpsEnum(ip_address, port):
 def mssqlEnum(ip_address, port):
     print "INFO: Detected MS-SQL on " + ip_address + ":" + port
     print "INFO: Performing nmap mssql script scan for " + ip_address + ":" + port    
-    MSSQLSCAN = "nmap -vv -sV -Pn -p %s --script=ms-sql-info,ms-sql-config,ms-sql-dump-hashes --script-args=mssql.instance-port=1433,smsql.username-sa,mssql.password-sa -oX %s/%s_mssql.xml %s" % (port, ip_address, ip_address, ip_address)
+    MSSQLSCAN = "nmap -vv -sV -Pn -p %s --script=ms-sql-info,ms-sql-config,ms-sql-dump-hashes --script-args=mssql.instance-port=1433,smsql.username-sa,mssql.password-sa -oX %s/%s/%s_mssql.xml %s" % (port, WORKSPACE, ip_address, ip_address, ip_address)
     results = subprocess.check_output(MSSQLSCAN, shell=True)
 
 def sshEnum(ip_address, port):
@@ -109,7 +108,7 @@ def ftpEnum(ip_address, port):
 
 def unknownEnum(ip_address, port):
     print "INFO: Attempting to enumerate unknown port detected at " + ip_address + ":" + port
-    AMAP = "amap %s %s > %s/%s_%s.amap" % (ip_address, port, ip_address, ip_address, port) 
+    AMAP = "amap %s %s > %s/%s/%s_%s.amap" % (ip_address, port, WORKSPACE, ip_address, ip_address, port) 
     results = subprocess.check_output(AMAP, shell=True)
     return
 
@@ -118,8 +117,8 @@ def nmapScan(ip_address):
    print "INFO: Running general TCP/UDP nmap scans for " + ip_address
    serv_dict = {}
    #TCPSCAN = "nmap -sV --top-ports 40 -oN '%s/%s.nmap' -oX '%s/%s_nmap_scan_import.xml' %s"  % (ip_address, ip_address, ip_address, ip_address, ip_address)
-   TCPSCAN = "nmap -vv -Pn -A -sC -sS -T 4 -p- -oN '%s/%s.nmap' -oX '%s/%s_nmap_scan_import.xml' %s"  % (ip_address, ip_address, ip_address, ip_address, ip_address)
-   UDPSCAN = "nmap -vv -Pn -A -sC -sU -T 4 --top-ports 200 -oN '%s/%sU.nmap' -oX '%s/%sU_nmap_scan_import.xml' %s" % (ip_address, ip_address, ip_address, ip_address, ip_address)
+   TCPSCAN = "nmap -vv -Pn -A -sC -sS -T 4 -p- -oN '%s/%s/%s.nmap' -oX '%s/%s/%s_nmap_scan_import.xml' %s"  % (WORKSPACE, ip_address, ip_address, WORKSPACE, ip_address, ip_address, ip_address)
+   UDPSCAN = "nmap -vv -Pn -A -sC -sU -T 4 --top-ports 200 -oN '%s/%s/%sU.nmap' -oX '%s/%s/%sU_nmap_scan_import.xml' %s" % (WORKSPACE, ip_address, ip_address, WORKSPACE, ip_address, ip_address, ip_address)
    results = subprocess.check_output(TCPSCAN, shell=True)
    udpresults = subprocess.check_output(UDPSCAN, shell=True)
    
@@ -189,7 +188,7 @@ def nmapScan(ip_address):
 def usage():
 	print "Recon usage"
 	print
-	print "Usage: reconscan.py <iplist> <workspace>"
+	print "Usage: reconscan.py <ipaddress>"
 	sys.exit(0)
 
 # grab the discover scan results and start scanning up hosts
@@ -205,9 +204,9 @@ if __name__=='__main__':
 		usage()
 	#f = open('results/lab/targets.txt', 'r') # CHANGE THIS!! grab the alive hosts from the discovery scan for enum
 	scanip = str(sys.argv[1])
-	workspace = str(sys.argv[1])
-	if not os.path.exists(sys.argv[1]):
-		os.makedirs(sys.argv[1])
+	#workspace = str(sys.argv[1])
+	if not os.path.exists(WORKSPACE + "/" + sys.argv[1]):
+		os.makedirs(WORKSPACE + "/" + sys.argv[1])
 	p = multiprocessing.Process(target=nmapScan, args=(scanip,))
 	p.start()
 	#os.chdir(workspace)

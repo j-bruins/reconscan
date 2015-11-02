@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import subprocess
 import sys
+from config import *
 
 if len(sys.argv) != 2:
     print "Usage: snmprecon.py <ip address>"
@@ -21,12 +22,12 @@ if results != "":
         snmpdetect = 1
     if snmpdetect == 1:
         print "[*] SNMP running on " + ip_address + "; OS Detect: " + results
-        SNMPWALK = "snmpwalk -c public -v1 %s 1 > %s/%s_snmpwalk.txt" % (ip_address, ip_address, ip_address)
+        SNMPWALK = "snmpwalk -c public -v1 %s 1 > %s/%s/%s_snmpwalk.txt" % (ip_address, WORKSPACE, ip_address, ip_address)
         results = subprocess.check_output(SNMPWALK, shell=True)
 
 NMAPSCAN = "nmap -vv -sV -sU -Pn -p 161,162 --script=snmp-netstat,snmp-processes %s" % (ip_address)
 results = subprocess.check_output(NMAPSCAN, shell=True)
-resultsfile = ip_address + "/" + ip_address + "_snmprecon.txt"
+resultsfile = WORKSPACE + "/" + ip_address + "/" + ip_address + "_snmprecon.txt"
 f = open(resultsfile, "w")
 f.write(results)
 f.close

@@ -2,12 +2,12 @@
 import socket
 import sys
 import subprocess
-
+from config import *
 if len(sys.argv) != 2:
     print "Usage: smtprecon.py <ip address>"
     sys.exit(0)
 
-dir = str(sys.argv[1]) + "/smtpnmapresults.txt"
+dir = WORKSPACE + "/" + str(sys.argv[1]) + "/smtpnmapresults.txt"
 SMTPSCAN = "nmap -vv -sV -Pn -p 25,465,587 --script=smtp-vuln* %s" % (sys.argv[1])
 results = subprocess.check_output(SMTPSCAN, shell=True)
 
