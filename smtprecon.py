@@ -9,11 +9,11 @@ if len(sys.argv) != 2:
 
 dir = WORKSPACE + "/" + str(sys.argv[1]) + "/smtpnmapresults.txt"
 SMTPSCAN = "nmap -vv -sV -Pn -p 25,465,587 --script=smtp-vuln* %s" % (sys.argv[1])
-results = subprocess.check_output(SMTPSCAN, shell=True)
+#results = subprocess.check_output(SMTPSCAN, shell=True)
 
-f = open(dir, "a")
-f.write(results)
-f.close
+#f = open(dir, "a")
+#f.write(results)
+#f.close
 
 
 print "INFO: Trying SMTP Enum on " + sys.argv[1]

@@ -11,7 +11,7 @@ ip_address = sys.argv[1]
 HOSTNAME = "nmblookup -A %s | grep '<00>' | grep -v '<GROUP>' | cut -d' ' -f1" % (ip_address)# grab the hostname         
 host = subprocess.check_output(HOSTNAME, shell=True).strip()
 print "INFO: Attempting Domain Transfer on " + host
-ZT = "dig @%s.thinc.local thinc.local axfr" % (host)
+ZT = "dig @%s thinc.local axfr" % (ip_address)
 ztresults = subprocess.check_output(ZT, shell=True)
 if "failed" in ztresults:
     print "INFO: Zone Transfer failed for " + host

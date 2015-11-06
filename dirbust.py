@@ -3,25 +3,32 @@
 import sys
 import os
 import subprocess
+from config import *
 
-if len(sys.argv) != 4:
-    print "Usage: dirbust.py <target url> <scan name> <workspace>"
+if len(sys.argv) != 3:
+    print "Usage: dirbust.py <target url> <port>"
+    print "Example: dirbust.py www.google.com 88"
+    print "====== DO NOT RUN DIRBUST ON GOOGLE ======"
     sys.exit(0)
 
-url = str(sys.argv[1])
-name = str(sys.argv[2])
-workspace = str(sys.argv[3])
+address = str(sys.argv[1])
+port = str(sys.argv[2])
+url = "http://" + address + ":" + port
+#name = str(sys.argv[2])
+#workspace = str(sys.argv[3])
 #folders = ["/usr/share/dirb/wordlists", "/usr/share/dirb/wordlists/vulns"]
-folders = ["/root/oscp/lists/MyWebDirLists"]
+folders = ["/root/lists/Discovery/Web_Content"]
 
 found = []
 print "INFO: Starting dirb scan for " + url
 for folder in folders:
     for filename in os.listdir(folder):
 
-	outfile = " -o " + workspace + "/" + name + "_dirb_" + filename
-	DIRBSCAN = "dirb %s %s/%s %s -S -r" % (url, folder, filename, outfile)
-        try:
+	outfile = "-o " + WORKSPACE + "/" + address + "/" + "dirb_" + port + "_" + filename
+	#print "running dirb on " + filename
+	DIRBSCAN = "dirb %s %s/%s -S -r %s" % (url, folder, filename, outfile)
+        print DIRBSCAN
+	try:
 	    results = subprocess.check_output(DIRBSCAN, shell=True)
 	    resultarr = results.split("\n")
 	    for line in resultarr:

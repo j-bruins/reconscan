@@ -8,9 +8,7 @@ worth anything anyway :)
 
 Modified by Jeff Bruins
 
-Usage: 
-./reconscan.py <ipaddress>
-./ftprecon.py <ipaddress> <port>
+Notes:
 (mreconscan.py is a temp script to reincorporate batch scanning but isn't currently functional)
 
 reconscan.py scans to target and then executes the additional scanning scripts based on the findings (smb currently disabled)
@@ -21,6 +19,12 @@ At the present time, only ftprecon has been extensively modified and is "guarant
 
 
 Change-log:
+11-6-2015
+
+Modified dirbust.py to incorporate more of the config global variables
+
+Fixed error in dnsrecon.py - now correctly executes dns zone transfers
+
 11-1-2015 part II
 
 Altered reconscan usage message
